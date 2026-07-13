@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teysha Darden — Build Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C2B3A;
+    --ink-soft:#4A5A68;
+    --paper:#F6F4EE;
+    --paper-raised:#FFFFFF;
+    --sage:#4F7C73;
+    --sage-deep:#3A5C55;
+    --amber:#D98E4A;
+    --line:#DCD6C7;
+    --line-soft:#EAE6DA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--sage);color:#fff;}
+
+  a{color:inherit;}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  /* ---------- NAV ---------- */
+  header.top{
+    position:sticky;top:0;z-index:50;
+    background:rgba(246,244,238,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .navrow{display:flex;align-items:center;justify-content:space-between;padding:18px 0;}
+  .brand{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--ink);font-weight:600;
+    display:flex;align-items:center;gap:8px;
+  }
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--amber);display:inline-block;}
+  .navlinks{display:flex;gap:28px;font-size:14px;font-weight:500;}
+  .navlinks a{text-decoration:none;color:var(--ink-soft);transition:color .15s;}
+  .navlinks a:hover{color:var(--sage-deep);}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:76px 0 56px;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:center;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--sage-deep);font-weight:600;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--sage);display:inline-block;}
+  h1{
+    font-family:'Fraunces',serif;font-weight:600;font-size:clamp(38px,4.6vw,58px);
+    line-height:1.06;letter-spacing:-0.01em;margin:0 0 22px;color:var(--ink);
+  }
+  h1 em{font-style:italic;color:var(--sage-deep);font-weight:500;}
+  .hero p.lede{font-size:17px;line-height:1.65;color:var(--ink-soft);max-width:52ch;margin:0 0 30px;}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    font-family:'Inter',sans-serif;font-weight:600;font-size:14.5px;
+    padding:13px 22px;border-radius:999px;text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;transition:transform .15s, box-shadow .15s;
+    border:1px solid transparent;cursor:pointer;
+  }
+  .btn-primary{background:var(--ink);color:#fff;}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(28,43,58,.22);}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:transparent;}
+  .btn-ghost:hover{border-color:var(--sage);color:var(--sage-deep);}
+
+  /* ---- signature: growth rings ---- */
+  .rings-card{
+    background:var(--paper-raised);border:1px solid var(--line);border-radius:20px;
+    padding:28px 26px;display:flex;flex-direction:column;align-items:center;gap:14px;
+  }
+  .rings-title{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+  .rings-legend{display:flex;flex-wrap:wrap;gap:10px 16px;justify-content:center;margin-top:6px;}
+  .rings-legend span{font-size:12px;color:var(--ink-soft);display:flex;align-items:center;gap:6px;}
+  .rings-legend i{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+  /* ---------- STATS STRIP ---------- */
+  .stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0;}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;text-align:center;}
+  .stat-num{font-family:'Fraunces',serif;font-size:32px;font-weight:600;color:var(--sage-deep);}
+  .stat-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-top:4px;}
+
+  /* ---------- ABOUT ---------- */
+  .about{padding:64px 0 20px;}
+  .about-grid{display:grid;grid-template-columns:0.8fr 1.2fr;gap:52px;}
+  .section-label{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--sage-deep);font-weight:600;margin-bottom:10px;
+  }
+  h2{font-family:'Fraunces',serif;font-size:28px;font-weight:600;margin:0 0 14px;color:var(--ink);}
+  .about p{font-size:15.5px;line-height:1.75;color:var(--ink-soft);}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .tag{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:6px 11px;border-radius:7px;
+    background:var(--line-soft);color:var(--ink-soft);border:1px solid var(--line);
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .projects{padding:56px 0 90px;}
+  .proj-head{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:18px;margin-bottom:26px;}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;}
+  .filter-btn{
+    font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 16px;border-radius:999px;
+    border:1px solid var(--line);background:var(--paper-raised);color:var(--ink-soft);cursor:pointer;
+    transition:all .15s;
+  }
+  .filter-btn:hover{border-color:var(--sage);color:var(--sage-deep);}
+  .filter-btn.active{background:var(--ink);border-color:var(--ink);color:#fff;}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .card{
+    background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 20px 18px;display:flex;flex-direction:column;gap:10px;
+    transition:box-shadow .15s, transform .15s;
+  }
+  .card:hover{box-shadow:0 10px 26px rgba(28,43,58,.08);transform:translateY(-2px);}
+  .card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .card-id{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sage-deep);font-weight:600;letter-spacing:.03em;}
+  .status-pill{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;
+    padding:4px 9px;border-radius:999px;font-weight:600;white-space:nowrap;
+  }
+  .status-not-started{background:var(--line-soft);color:var(--ink-soft);}
+  .status-in-progress{background:#FCE9D0;color:#8A5A22;}
+  .status-completed{background:#DCEBE1;color:var(--sage-deep);}
+
+  .card-title{font-family:'Fraunces',serif;font-size:17.5px;font-weight:600;line-height:1.3;margin:0;color:var(--ink);}
+  .card-desc{font-size:13.5px;line-height:1.55;color:var(--ink-soft);}
+  .card-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+  .meta-chip{
+    font-size:11px;padding:4px 9px;border-radius:6px;background:var(--line-soft);color:var(--ink-soft);
+    font-weight:500;
+  }
+  .diff-Beginner{background:#E4F0DE;color:#4B6E3B;}
+  .diff-Intermediate{background:#FCE9D0;color:#8A5A22;}
+  .diff-Advanced{background:#F5DCDA;color:#8C3B34;}
+
+  .card-more{
+    margin-top:4px;font-size:12.5px;font-weight:600;color:var(--sage-deep);cursor:pointer;
+    display:flex;align-items:center;gap:5px;user-select:none;
+  }
+  .card-expand{display:none;font-size:13px;line-height:1.6;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:10px;margin-top:2px;}
+  .card-expand.open{display:block;}
+  .card-expand .row{margin-bottom:8px;}
+  .card-expand .row b{color:var(--ink);font-weight:600;}
+  .card-link{
+    display:inline-block;margin-top:6px;font-size:12.5px;font-weight:600;color:var(--sage-deep);
+    text-decoration:none;border-bottom:1px solid var(--sage);
+  }
+  .card-link.disabled{color:var(--ink-soft);border-bottom:1px dashed var(--line);pointer-events:none;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);padding:38px 0;}
+  .foot-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+  .foot-note{font-size:13px;color:var(--ink-soft);}
+  .foot-links{display:flex;gap:18px;font-size:13px;font-weight:600;}
+  .foot-links a{text-decoration:none;color:var(--sage-deep);}
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .about-grid{grid-template-columns:1fr;gap:24px;}
+    .stats-grid{grid-template-columns:repeat(2,1fr);}
+    .grid{grid-template-columns:1fr;}
+    .navlinks{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap navrow">
+    <div class="brand"><span class="dot"></span>Teysha Darden — Build Log</div>
+    <nav class="navlinks">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#footer">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Hands-on portfolio, built in public</div>
+      <h1>I learn by <em>building</em>, so this is where I show my work.</h1>
+      <p class="lede">A running build log across five tracks: Executive Assistant, IT, Computer Science, Project Management, and Software Engineering. Every project below is real practice toward an IT or Software Engineering internship, with Executive Assistant and Project Management work alongside it.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#projects">See the projects</a>
+        <a class="btn btn-ghost" href="#about">About me</a>
+      </div>
+    </div>
+    <div class="rings-card">
+      <div class="rings-title">Progress by track</div>
+      <svg id="rings-svg" viewBox="0 0 240 240" width="220" height="220"></svg>
+      <div class="rings-legend" id="rings-legend"></div>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="wrap stats-grid">
+    <div><div class="stat-num" id="stat-total">0</div><div class="stat-label">Total Projects</div></div>
+    <div><div class="stat-num" id="stat-done">0</div><div class="stat-label">Completed</div></div>
+    <div><div class="stat-num" id="stat-progress">0</div><div class="stat-label">In Progress</div></div>
+    <div><div class="stat-num" id="stat-tracks">5</div><div class="stat-label">Tracks</div></div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div>
+      <div class="section-label">About</div>
+      <h2>Business operations meets hands-on technical build.</h2>
+    </div>
+    <div>
+      <p>I work in external partnerships and digital initiatives at a statewide trade association, where I manage vendor relationships, coordinate cross-team projects, and build out web tools from scratch. I'm currently pursuing a degree in Business and Information Technology, and I'm working toward an IT or Software Engineering internship, with Executive Assistant and Project Management roles as a field I genuinely enjoy along the way.</p>
+      <p>I don't learn well from lectures. I learn by shipping something, breaking it, and fixing it. This site is the record of that process, updated as each project moves from planned to in progress to done.</p>
+      <div class="tags">
+        <span class="tag">SQL</span><span class="tag">Excel / Data Tools</span><span class="tag">HTML · CSS · JS</span>
+        <span class="tag">Project Coordination</span><span class="tag">Vendor Management</span><span class="tag">Process Documentation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="projects" id="projects">
+  <div class="wrap">
+    <div class="proj-head">
+      <div>
+        <div class="section-label">Build Log</div>
+        <h2>50 projects, five tracks</h2>
+      </div>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="wrap foot-row">
+    <div class="foot-note">Updated as each project ships. Status and links are edited directly in this file.</div>
+    <div class="foot-links">
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script id="project-data" type="application/json">
+{
+  "categories": [
+    "Executive Assistant",
+    "IT",
+    "Computer Science",
+    "Project Management",
+    "Software Engineering"
+  ],
+  "projects": [
+    {
+      "id": "EA-01",
+      "category": "Executive Assistant",
+      "title": "Executive Calendar Optimization System",
+      "description": "Design a scheduling policy for a mock executive: buffer rules between meetings, time-zone handling for remote attendees, and a conflict-resolution priority matrix. Build it out in Google Calendar or Excel with a one-page policy doc explaining the logic.",
+      "skills": "Calendar management, prioritization, policy writing",
+      "tools": "Google Calendar, Excel, Word",
+      "difficulty": "Beginner",
+      "time": "1 day",
+      "deliverable": "Policy doc + working calendar template",
+      "bullet": "Designed and documented a calendar management system with tiered scheduling rules, reducing hypothetical meeting conflicts and time-zone errors.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "EA-02",
+      "category": "Executive Assistant",
+      "title": "Multi-City Travel Itinerary Builder",
+      "description": "Build a polished, print-ready itinerary for a fictional 4-day, 3-city business trip: flights, hotels, ground transport, meeting blocks, and a contingency plan for a missed connection.",
+      "skills": "Travel coordination, contingency planning, attention to detail",
+      "tools": "Word or Canva, Excel",
+      "difficulty": "Beginner",
+      "time": "1 day",
+      "deliverable": "Formatted itinerary document",
+      "bullet": "Created a multi-city executive travel itinerary template with built-in contingency planning for schedule disruptions.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "EA-03",
+      "category": "Executive Assistant",
+      "title": "Meeting Minutes & Action-Item Tracker",
+      "description": "Build a reusable system in Notion or Excel that captures meeting minutes and automatically surfaces open action items by owner and due date, with an overdue flag.",
+      "skills": "Meeting facilitation support, follow-through systems",
+      "tools": "Notion or Excel (conditional formatting)",
+      "difficulty": "Intermediate",
+      "time": "1-2 days",
+      "deliverable": "Working template with sample meeting populated",
+      "bullet": "Built an action-item tracking system that auto-flags overdue tasks by owner, improving meeting follow-through.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "EA-04",
+      "category": "Executive Assistant",
+      "title": "Executive Briefing Book Template",
+      "description": "Create a pre-meeting briefing packet for a fictional exec meeting an important partner: attendee bios, background on the partner org, agenda, and 3 suggested talking points.",
+      "skills": "Research synthesis, executive communication",
+      "tools": "Word or Canva",
+      "difficulty": "Intermediate",
+      "time": "1-2 days",
+      "deliverable": "Formatted briefing packet (PDF)",
+      "bullet": "Produced executive briefing materials synthesizing partner research into concise, meeting-ready talking points.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "EA-05",
+      "category": "Executive Assistant",
+      "title": "Inbox Triage & Response Playbook",
+      "description": "Take 20 realistic sample emails an exec might receive, sort them into a priority matrix (urgent/important), and write 5 reusable response templates for the most common categories.",
+      "skills": "Prioritization, written communication",
+      "tools": "Excel, Word",
+      "difficulty": "Beginner",
+      "time": "1 day",
+      "deliverable": "Priority matrix + template library",
+      "bullet": "Developed an email triage framework and response template library to streamline executive inbox management.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "EA-06",
+      "category": "Executive Assistant",
+      "title": "Vendor & Contract Tracker Dashboard",
+      "description": "Build an Excel dashboard tracking vendor contracts: renewal dates, contact info, spend, and a formula-driven alert for contracts renewing within 60 days. Model it loosely on a vendor relationship like Q6 Cyber.",
+      "skills": "Vendor management, dashboard design",
+      "tools": "Excel (formulas, conditional formatting)",
+      "difficulty": "Intermediate",
+      "time": "2 days",
+      "deliverable": "Interactive Excel dashboard",
+      "bullet": "Built a vendor contract tracking dashboard with automated renewal alerts, supporting proactive vendor relationship management.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "EA-07",
+      "category": "Executive Assistant",
+      "title": "Board Meeting Prep Kit",
+      "description": "Assemble a full board-meeting prep kit: agenda template, minutes template, motion/resolution tracker, and a post-meeting follow-up log.",
+      "skills": "Governance support, documentation systems",
+      "tools": "Word, Excel",
+      "difficulty": "Intermediate",
+      "time": "1-2 days",
+      "deliverable": "Four-part template kit",
+      "bullet": "Created a complete board-meeting documentation kit covering agendas, minutes, resolutions, and follow-up tracking.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "EA-08",
+      "category": "Executive Assistant",
+      "title": "Expense Report Automation Template",
+      "description": "Build an Excel expense report template with formulas that auto-categorize spend, calculate totals by category, and flag entries missing a receipt, echoing a Concur-style workflow.",
+      "skills": "Expense management, process automation",
+      "tools": "Excel (SUMIFS, data validation)",
+      "difficulty": "Intermediate",
+      "time": "1-2 days",
+      "deliverable": "Automated expense report template",
+      "bullet": "Automated an expense-reporting template with formula-driven categorization and receipt compliance flags, modeled on Concur workflows.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "EA-09",
+      "category": "Executive Assistant",
+      "title": "New-Hire Onboarding SOP",
+      "description": "Write a complete onboarding checklist and SOP for a new hire's first two weeks, covering accounts, equipment, introductions, and 30/60/90-day check-ins.",
+      "skills": "Process documentation, onboarding design",
+      "tools": "Word or Notion",
+      "difficulty": "Beginner",
+      "time": "1 day",
+      "deliverable": "Onboarding SOP document",
+      "bullet": "Authored a standardized new-hire onboarding SOP with 30/60/90-day milestones to improve ramp-up consistency.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "EA-10",
+      "category": "Executive Assistant",
+      "title": "EA Impact Metrics Dashboard",
+      "description": "Track your own admin/EA-style work for two weeks (meetings coordinated, tasks resolved, hours saved via automation) and turn it into a simple metrics dashboard that quantifies your impact.",
+      "skills": "Self-tracking, data storytelling",
+      "tools": "Excel",
+      "difficulty": "Beginner",
+      "time": "2 weeks (ongoing)",
+      "deliverable": "Metrics dashboard with summary chart",
+      "bullet": "Quantified administrative impact through a self-tracked metrics dashboard, translating daily tasks into measurable outcomes.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "IT-01",
+      "category": "IT",
+      "title": "Home Network Diagram & Documentation",
+      "description": "Map your home network topology, document the IP scheme/subnetting, and note every device's role. Produce a clean network diagram.",
+      "skills": "Networking fundamentals, documentation",
+      "tools": "draw.io or Lucidchart",
+      "difficulty": "Beginner",
+      "time": "1 day",
+      "deliverable": "Network diagram + written doc",
+      "bullet": "Documented a home network topology including IP addressing scheme and device roles.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "IT-02",
+      "category": "IT",
+      "title": "Personal Help Desk Ticketing System",
+      "description": "Build a simple ticket tracker (Excel or Google Sheets) that logs issue type, priority, status, and resolution time, then run 10 mock tickets through it start to finish.",
+      "skills": "Help desk workflow, prioritization",
+      "tools": "Excel or Google Sheets",
+      "difficulty": "Beginner",
+      "time": "1 day",
+      "deliverable": "Ticket tracker with sample data",
+      "bullet": "Built and operated a mock help desk ticketing workflow tracking issue priority and resolution time.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "IT-03",
+      "category": "IT",
+      "title": "PC Build/Upgrade Troubleshooting Log",
+      "description": "Upgrade or build a PC (even a component swap), and keep a detailed troubleshooting log of every issue encountered and how you resolved it.",
+      "skills": "Hardware troubleshooting, technical documentation",
+      "tools": "Physical hardware, Word",
+      "difficulty": "Intermediate",
+      "time": "2-3 days",
+      "deliverable": "Written troubleshooting log",
+      "bullet": "Performed a hardware upgrade/build and documented a full troubleshooting process for future reference.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "IT-04",
+      "category": "IT",
+      "title": "Virtual Lab: Windows Server + Client",
+      "description": "Set up a small virtual lab with VirtualBox: one Windows Server VM configured with Active Directory, one client VM joined to the domain. Document every setup step.",
+      "skills": "Virtualization, Active Directory basics",
+      "tools": "VirtualBox, Windows Server evaluation",
+      "difficulty": "Advanced",
+      "time": "3-4 days",
+      "deliverable": "Lab setup guide with screenshots",
+      "bullet": "Configured a virtualized Active Directory lab environment, including domain join and user/group management.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "IT-05",
+      "category": "IT",
+      "title": "Personal Security Audit & Hardening",
+      "description": "Audit your own digital footprint: password reuse, MFA coverage, exposed accounts. Implement a password manager and MFA everywhere possible, and write up a before/after findings report.",
+      "skills": "Security fundamentals, risk assessment",
+      "tools": "Password manager, MFA apps",
+      "difficulty": "Beginner",
+      "time": "1-2 days",
+      "deliverable": "Findings report (before/after)",
+      "bullet": "Conducted a personal security audit and implemented MFA and password-manager hardening, documented in a findings report.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "IT-06",
+      "category": "IT",
+      "title": "Automated File Backup Script",
+      "description": "Write a PowerShell or Python script that backs up a designated folder on a schedule, with logging and error handling for failed backups.",
+      "skills": "Scripting, automation, error handling",
+      "tools": "PowerShell or Python, Task Scheduler/cron",
+      "difficulty": "Intermediate",
+      "time": "1-2 days",
+      "deliverable": "Script + scheduled task + log output",
+      "bullet": "Automated a scheduled file backup process with logging and error handling using PowerShell/Python.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "IT-07",
+      "category": "IT",
+      "title": "IT Asset Inventory Tracker",
+      "description": "Build a tracker for devices, software licenses, and warranty/renewal dates, with a formula-driven alert for anything expiring within 30 days.",
+      "skills": "Asset management, inventory control",
+      "tools": "Excel or Access",
+      "difficulty": "Beginner",
+      "time": "1 day",
+      "deliverable": "Asset inventory workbook",
+      "bullet": "Built an IT asset inventory tracker with automated expiration alerts for licenses and warranties.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "IT-08",
+      "category": "IT",
+      "title": "Linux Server Setup & Hardening",
+      "description": "Spin up a Linux VM (Ubuntu Server), configure SSH key-based login, a basic firewall, and fail2ban, then document every hardening step taken.",
+      "skills": "Linux administration, security basics",
+      "tools": "Ubuntu Server, SSH, UFW/fail2ban",
+      "difficulty": "Advanced",
+      "time": "2-3 days",
+      "deliverable": "Hardening guide with configuration steps",
+      "bullet": "Deployed and hardened a Linux server, implementing SSH key authentication, firewall rules, and intrusion prevention.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "IT-09",
+      "category": "IT",
+      "title": "Google Workspace/M365 Admin Sandbox",
+      "description": "Set up a free-tier admin console (Google Workspace or M365 trial), create test users/groups, and configure permission tiers and shared resources.",
+      "skills": "Identity & access management basics",
+      "tools": "Google Workspace or Microsoft 365 admin trial",
+      "difficulty": "Intermediate",
+      "time": "1-2 days",
+      "deliverable": "Admin console configuration + write-up",
+      "bullet": "Configured user, group, and permission structures in a Google Workspace/M365 admin sandbox environment.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "IT-10",
+      "category": "IT",
+      "title": "Help Desk Knowledge Base",
+      "description": "Write 10 short knowledge-base articles for common IT issues (e.g., 'Wi-Fi won't connect', 'printer offline'), formatted like real support docs with steps and screenshots.",
+      "skills": "Technical writing, end-user support",
+      "tools": "Word, Notion, or a static site",
+      "difficulty": "Beginner",
+      "time": "2-3 days",
+      "deliverable": "10-article knowledge base",
+      "bullet": "Authored a 10-article IT knowledge base covering common end-user troubleshooting scenarios.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "CS-01",
+      "category": "Computer Science",
+      "title": "Data Structures Visualizer",
+      "description": "Build a small interactive page that visualizes a stack, queue, and linked list, letting the user push/pop/enqueue/dequeue and see the structure update live.",
+      "skills": "Data structures, DOM manipulation",
+      "tools": "HTML/CSS/JavaScript",
+      "difficulty": "Intermediate",
+      "time": "2-3 days",
+      "deliverable": "Interactive web page",
+      "bullet": "Built an interactive visualizer for core data structures (stack, queue, linked list) to reinforce and demonstrate CS fundamentals.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "CS-02",
+      "category": "Computer Science",
+      "title": "Sorting Algorithm Playground",
+      "description": "Implement bubble, insertion, and merge sort, and build a simple visualization that animates each one on the same dataset, with a written Big-O comparison.",
+      "skills": "Algorithms, complexity analysis",
+      "tools": "Python or JavaScript",
+      "difficulty": "Intermediate",
+      "time": "2-3 days",
+      "deliverable": "Working demo + comparison write-up",
+      "bullet": "Implemented and visualized three sorting algorithms with a comparative Big-O time/space complexity analysis.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "CS-03",
+      "category": "Computer Science",
+      "title": "Command-Line Calculator with Expression Parser",
+      "description": "Build a calculator that parses multi-operator expressions with correct order of operations (an intro to tokenizing and parsing), not just single operations.",
+      "skills": "Parsing, algorithmic thinking",
+      "tools": "Python",
+      "difficulty": "Intermediate",
+      "time": "2 days",
+      "deliverable": "CLI tool + source code",
+      "bullet": "Built a command-line expression calculator implementing tokenizing and order-of-operations parsing logic.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "CS-04",
+      "category": "Computer Science",
+      "title": "To-Do List CLI App with File Persistence",
+      "description": "Build a command-line to-do app that reads/writes tasks to a local file so data survives between runs, with add/complete/delete/list commands.",
+      "skills": "File I/O, CRUD logic",
+      "tools": "Python",
+      "difficulty": "Beginner",
+      "time": "1 day",
+      "deliverable": "CLI app + source code",
+      "bullet": "Developed a persistent command-line task manager with full CRUD functionality and file-based storage.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "CS-05",
+      "category": "Computer Science",
+      "title": "Recursion Practice Set",
+      "description": "Solve 10 recursion problems (factorial, Fibonacci, maze solver, tree traversal, etc.), and write a short explanation of the recursive logic for each.",
+      "skills": "Recursion, algorithmic problem-solving",
+      "tools": "Python",
+      "difficulty": "Intermediate",
+      "time": "3-4 days",
+      "deliverable": "Annotated solution set",
+      "bullet": "Solved and documented 10 recursive algorithm problems spanning numeric, string, and tree-based recursion.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "CS-06",
+      "category": "Computer Science",
+      "title": "Relational Database Design Project",
+      "description": "Design a normalized schema (3NF) for a real-world scenario like a job application tracker, populate it with sample data, and write 10 queries answering real questions about it.",
+      "skills": "Database design, SQL",
+      "tools": "SQLite or MySQL",
+      "difficulty": "Intermediate",
+      "time": "2-3 days",
+      "deliverable": "Schema diagram + query set",
+      "bullet": "Designed a normalized relational database schema and wrote SQL queries to extract business insights from sample data.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "CS-07",
+      "category": "Computer Science",
+      "title": "Web Scraper with CSV Export",
+      "description": "Write a Python script that scrapes structured data from a public site (job listings, book prices, etc.), cleans it, and exports it to CSV.",
+      "skills": "Web scraping, data cleaning",
+      "tools": "Python, BeautifulSoup/requests",
+      "difficulty": "Intermediate",
+      "time": "1-2 days",
+      "deliverable": "Script + sample CSV output",
+      "bullet": "Built a Python web scraper that extracts, cleans, and exports structured data to CSV for analysis.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "CS-08",
+      "category": "Computer Science",
+      "title": "Algorithm Complexity Journal",
+      "description": "Pick 5 common algorithms and write a plain-language explanation of how each works and its time/space complexity, formatted like a technical blog series. Doubles as content for The Quiet Rebuild's tech-adjacent audience if you ever want to cross-post.",
+      "skills": "Technical writing, complexity analysis",
+      "tools": "Markdown",
+      "difficulty": "Beginner",
+      "time": "3-4 days",
+      "deliverable": "5-part written series",
+      "bullet": "Authored a technical writing series explaining algorithm design and Big-O complexity in accessible language.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "CS-09",
+      "category": "Computer Science",
+      "title": "Rule-Based Chatbot",
+      "description": "Build a simple chatbot that responds to keyword patterns and maintains basic conversation state (e.g., remembers the user's name), without relying on an external AI API.",
+      "skills": "Conditional logic, state management",
+      "tools": "Python or JavaScript",
+      "difficulty": "Intermediate",
+      "time": "2 days",
+      "deliverable": "Working chatbot + source code",
+      "bullet": "Built a rule-based conversational chatbot with pattern matching and basic conversation state tracking.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "CS-10",
+      "category": "Computer Science",
+      "title": "Tic-Tac-Toe with a Minimax AI Opponent",
+      "description": "Build tic-tac-toe with a simple AI opponent using the minimax algorithm so it never loses, and write a short explanation of how minimax explores the game tree.",
+      "skills": "Game logic, basic AI/search algorithms",
+      "tools": "Python or JavaScript",
+      "difficulty": "Advanced",
+      "time": "2-3 days",
+      "deliverable": "Playable game + write-up",
+      "bullet": "Implemented an unbeatable tic-tac-toe AI opponent using the minimax search algorithm.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "PM-01",
+      "category": "Project Management",
+      "title": "Project Charter & Scope Document",
+      "description": "Write a formal project charter for one of your own real initiatives (e.g., The Quiet Rebuild launch): objectives, scope, out-of-scope items, success metrics, and stakeholders.",
+      "skills": "Scoping, project initiation",
+      "tools": "Word",
+      "difficulty": "Beginner",
+      "time": "1 day",
+      "deliverable": "Project charter document",
+      "bullet": "Authored a formal project charter defining scope, objectives, and success metrics for a self-led initiative.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "PM-02",
+      "category": "Project Management",
+      "title": "Gantt Chart & Timeline Builder",
+      "description": "Build a full project timeline with dependencies and milestones in Excel or Smartsheet for a real or mock 6-week initiative.",
+      "skills": "Scheduling, dependency mapping",
+      "tools": "Excel or Smartsheet",
+      "difficulty": "Intermediate",
+      "time": "1-2 days",
+      "deliverable": "Gantt chart with milestones",
+      "bullet": "Built a dependency-mapped project timeline and Gantt chart to plan a six-week initiative.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "PM-03",
+      "category": "Project Management",
+      "title": "Risk Register & Mitigation Plan",
+      "description": "Build a risk register for a sample project: identify 10 risks, rate likelihood/impact, and write a mitigation or contingency plan for each.",
+      "skills": "Risk management, contingency planning",
+      "tools": "Excel",
+      "difficulty": "Beginner",
+      "time": "1 day",
+      "deliverable": "Risk register workbook",
+      "bullet": "Developed a risk register with likelihood/impact scoring and mitigation plans for a sample project.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "PM-04",
+      "category": "Project Management",
+      "title": "Kanban Workflow Build-Out",
+      "description": "Set up a full Kanban board (Trello or Notion) for a real project with defined columns, WIP limits, and labeling conventions, and run it for two real weeks.",
+      "skills": "Agile/Kanban methodology, workflow design",
+      "tools": "Trello or Notion",
+      "difficulty": "Beginner",
+      "time": "2 weeks (ongoing)",
+      "deliverable": "Live board + workflow doc",
+      "bullet": "Designed and operated a Kanban workflow with WIP limits to manage a real two-week project cycle.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "PM-05",
+      "category": "Project Management",
+      "title": "Stakeholder Communication Plan",
+      "description": "Build a stakeholder matrix (power/interest grid) for a sample project, then write a communication plan detailing cadence, channel, and owner for each stakeholder group.",
+      "skills": "Stakeholder management, communication planning",
+      "tools": "Excel, Word",
+      "difficulty": "Intermediate",
+      "time": "1 day",
+      "deliverable": "Stakeholder matrix + comms plan",
+      "bullet": "Built a stakeholder power/interest matrix and corresponding communication plan for a cross-functional project.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "PM-06",
+      "category": "Project Management",
+      "title": "Project Budget Tracker",
+      "description": "Build a budget-vs-actual tracker for a mock project with formula-driven variance calculations and a simple burn-rate chart.",
+      "skills": "Budget management, financial tracking",
+      "tools": "Excel (SUMIFS, charts)",
+      "difficulty": "Intermediate",
+      "time": "1-2 days",
+      "deliverable": "Budget tracker workbook with chart",
+      "bullet": "Built a budget-vs-actual tracker with automated variance calculations and burn-rate visualization.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "PM-07",
+      "category": "Project Management",
+      "title": "Project Retrospective Report",
+      "description": "Write a formal retrospective on a completed initiative (the Innovation Magnet website rebuild is a great real candidate): what went well, what didn't, and 3 concrete process changes for next time.",
+      "skills": "Retrospective analysis, continuous improvement",
+      "tools": "Word",
+      "difficulty": "Beginner",
+      "time": "1 day",
+      "deliverable": "Retrospective report",
+      "bullet": "Conducted a project retrospective identifying process improvements, informing a revised delivery approach for future initiatives.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "PM-08",
+      "category": "Project Management",
+      "title": "Agile Sprint Planning Simulation",
+      "description": "Run a mock two-week sprint: write a backlog, groom and estimate it, hold (self-run, documented) daily standups, and close with a velocity calculation.",
+      "skills": "Agile/Scrum methodology, estimation",
+      "tools": "Notion or Jira (free tier)",
+      "difficulty": "Intermediate",
+      "time": "2 weeks (ongoing)",
+      "deliverable": "Documented sprint artifacts",
+      "bullet": "Simulated a full two-week Agile sprint cycle, including backlog grooming, standups, and velocity tracking.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "PM-09",
+      "category": "Project Management",
+      "title": "RACI Matrix for a Cross-Functional Initiative",
+      "description": "Build a RACI matrix for a sample cross-functional initiative involving 4+ roles, clarifying who is Responsible, Accountable, Consulted, and Informed for each task.",
+      "skills": "Role clarity, cross-functional coordination",
+      "tools": "Excel",
+      "difficulty": "Beginner",
+      "time": "Half day",
+      "deliverable": "RACI matrix",
+      "bullet": "Built a RACI matrix to clarify roles and decision rights across a cross-functional initiative.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "PM-10",
+      "category": "Project Management",
+      "title": "Process Improvement Case Study",
+      "description": "Pick an inefficient process (real or hypothetical), document the current-state workflow, propose a future-state redesign, and quantify the projected time/cost savings.",
+      "skills": "Process mapping, business case writing",
+      "tools": "Word, draw.io",
+      "difficulty": "Intermediate",
+      "time": "2 days",
+      "deliverable": "Case study document",
+      "bullet": "Authored a process improvement case study proposing a redesigned workflow with quantified time and cost savings.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "SE-01",
+      "category": "Software Engineering",
+      "title": "Personal Portfolio Website",
+      "description": "Build and deploy a personal portfolio site showcasing your projects across all five tracks, with filtering by category. (This is the site built alongside this tracker.)",
+      "skills": "HTML/CSS/JS, deployment",
+      "tools": "HTML/CSS/JS, GitHub Pages",
+      "difficulty": "Intermediate",
+      "time": "2-3 days",
+      "deliverable": "Live deployed website",
+      "bullet": "Designed and deployed a personal portfolio website showcasing cross-disciplinary technical and operational projects.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "SE-02",
+      "category": "Software Engineering",
+      "title": "Job Application Tracker Web App",
+      "description": "Rebuild your Excel job-application tracker as a full CRUD web app: add/edit/delete applications, filter by status, and see basic stats (applications this week, response rate).",
+      "skills": "Full-stack CRUD, state management",
+      "tools": "React or vanilla JS + local storage/simple backend",
+      "difficulty": "Advanced",
+      "time": "4-5 days",
+      "deliverable": "Working web app",
+      "bullet": "Built a full-stack job application tracker with CRUD functionality and real-time application-status analytics.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "SE-03",
+      "category": "Software Engineering",
+      "title": "Weather Dashboard (Public API)",
+      "description": "Build a dashboard that fetches live weather data from a public API and displays current conditions plus a 5-day forecast with clean UI states for loading/error.",
+      "skills": "API integration, async JS, UI states",
+      "tools": "JavaScript, a free weather API",
+      "difficulty": "Intermediate",
+      "time": "1-2 days",
+      "deliverable": "Working web app",
+      "bullet": "Built a weather dashboard consuming a public REST API with handled loading, error, and empty states.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "SE-04",
+      "category": "Software Engineering",
+      "title": "REST API for a To-Do List",
+      "description": "Build a small backend REST API (GET/POST/PUT/DELETE) for managing tasks, with proper status codes and basic input validation, tested with Postman.",
+      "skills": "Backend development, REST API design",
+      "tools": "Node/Express or Python/Flask",
+      "difficulty": "Intermediate",
+      "time": "2-3 days",
+      "deliverable": "API + Postman test collection",
+      "bullet": "Designed and built a REST API with full CRUD endpoints, input validation, and proper HTTP status handling.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "SE-05",
+      "category": "Software Engineering",
+      "title": "Budget Tracker Web App with Charts",
+      "description": "Build a full-stack expense tracker with categorized spending, monthly totals, and a chart visualizing spend by category.",
+      "skills": "Full-stack development, data visualization",
+      "tools": "React, Chart.js/Recharts",
+      "difficulty": "Advanced",
+      "time": "3-4 days",
+      "deliverable": "Working web app",
+      "bullet": "Built a full-stack budget tracking application with category-based spend visualization using Chart.js/Recharts.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "SE-06",
+      "category": "Software Engineering",
+      "title": "Content Calendar Organizer App",
+      "description": "Build a CRUD app for planning content (tailored to The Quiet Rebuild's calendar): posts with a platform, status, and scheduled date, filterable by platform and status.",
+      "skills": "Full-stack CRUD, filtering/search logic",
+      "tools": "React or vanilla JS + local storage/simple backend",
+      "difficulty": "Intermediate",
+      "time": "2-3 days",
+      "deliverable": "Working web app",
+      "bullet": "Built a content-calendar management app with filterable status and platform tracking for editorial planning.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "SE-07",
+      "category": "Software Engineering",
+      "title": "Mini Blog/CMS Platform",
+      "description": "Build a simple content management system: write posts in a form, save them, and render them on a public-facing blog page with a working detail view.",
+      "skills": "Full-stack development, content rendering",
+      "tools": "Node/Express + a database, or a static-site generator approach",
+      "difficulty": "Advanced",
+      "time": "4-5 days",
+      "deliverable": "Working blog platform",
+      "bullet": "Built a lightweight content management system enabling post creation, storage, and public rendering.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "SE-08",
+      "category": "Software Engineering",
+      "title": "Browser Extension: Productivity Utility",
+      "description": "Build a small Chrome extension that solves one real annoyance (e.g., a quick-note popup, a site-blocker during focus hours), and package it for local install.",
+      "skills": "Browser APIs, packaging",
+      "tools": "JavaScript, Chrome Extension API",
+      "difficulty": "Intermediate",
+      "time": "2-3 days",
+      "deliverable": "Installable extension + source code",
+      "bullet": "Built and packaged a Chrome browser extension using the Chrome Extension API to solve a real productivity pain point.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "SE-09",
+      "category": "Software Engineering",
+      "title": "Devotional/Verse API + Frontend",
+      "description": "Build a small backend API serving a curated set of devotionals or verses (tie-in to The Quiet Rebuild), plus a clean frontend that fetches and displays a 'verse of the day.'",
+      "skills": "API design, full-stack integration",
+      "tools": "Node/Express or Flask + JS frontend",
+      "difficulty": "Advanced",
+      "time": "3-4 days",
+      "deliverable": "Working API + frontend",
+      "bullet": "Designed a custom content API and connected frontend, applying full-stack development skills to a personal brand project.",
+      "status": "Not Started",
+      "link": ""
+    },
+    {
+      "id": "SE-10",
+      "category": "Software Engineering",
+      "title": "GitHub Stats Dashboard",
+      "description": "Build an app that pulls your public GitHub activity via the GitHub API (repos, commits, languages used) and renders it as a clean personal stats dashboard.",
+      "skills": "API integration, data visualization",
+      "tools": "JavaScript, GitHub REST API",
+      "difficulty": "Intermediate",
+      "time": "2 days",
+      "deliverable": "Working dashboard",
+      "bullet": "Built a personal GitHub activity dashboard by integrating the GitHub REST API and visualizing contribution data.",
+      "status": "Not Started",
+      "link": ""
+    }
+  ]
+}
+</script>
+
+<script>
+const DATA = JSON.parse(document.getElementById('project-data').textContent);
+const CATS = DATA.categories;
+const PROJECTS = DATA.projects;
+
+const CAT_COLORS = {
+  "Executive Assistant": "#D98E4A",
+  "IT": "#4F7C73",
+  "Computer Science": "#7B6FA6",
+  "Project Management": "#C46A5E",
+  "Software Engineering": "#3A7CA5"
+};
+
+function statusClass(s){
+  if(s === "Completed") return "status-completed";
+  if(s === "In Progress") return "status-in-progress";
+  return "status-not-started";
+}
+
+function diffClass(d){ return "diff-" + d; }
+
+// ---- stats ----
+document.getElementById('stat-total').textContent = PROJECTS.length;
+document.getElementById('stat-done').textContent = PROJECTS.filter(p=>p.status==="Completed").length;
+document.getElementById('stat-progress').textContent = PROJECTS.filter(p=>p.status==="In Progress").length;
+
+// ---- growth rings ----
+(function drawRings(){
+  const svg = document.getElementById('rings-svg');
+  const legend = document.getElementById('rings-legend');
+  const cx = 120, cy = 120;
+  let baseR = 34;
+  const gap = 15;
+  const stroke = 11;
+  CATS.forEach((cat, i)=>{
+    const r = baseR + i*gap;
+    const total = PROJECTS.filter(p=>p.category===cat).length;
+    const done = PROJECTS.filter(p=>p.category===cat && p.status==="Completed").length;
+    const pct = total ? done/total : 0;
+    const circumference = 2*Math.PI*r;
+    const bg = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    bg.setAttribute("cx",cx); bg.setAttribute("cy",cy); bg.setAttribute("r",r);
+    bg.setAttribute("fill","none"); bg.setAttribute("stroke","#EAE6DA");
+    bg.setAttribute("stroke-width",stroke);
+    svg.appendChild(bg);
+
+    const fg = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    fg.setAttribute("cx",cx); fg.setAttribute("cy",cy); fg.setAttribute("r",r);
+    fg.setAttribute("fill","none"); fg.setAttribute("stroke",CAT_COLORS[cat]);
+    fg.setAttribute("stroke-width",stroke);
+    fg.setAttribute("stroke-linecap","round");
+    fg.setAttribute("stroke-dasharray", `${circumference*pct} ${circumference}`);
+    fg.setAttribute("transform", `rotate(-90 ${cx} ${cy})`);
+    svg.appendChild(fg);
+
+    const li = document.createElement('span');
+    li.innerHTML = `<i style="background:${CAT_COLORS[cat]}"></i>${cat} (${done}/${total})`;
+    legend.appendChild(li);
+  });
+})();
+
+// ---- filters ----
+const filtersEl = document.getElementById('filters');
+let activeCat = 'All';
+function renderFilters(){
+  filtersEl.innerHTML = '';
+  ['All', ...CATS].forEach(cat=>{
+    const b = document.createElement('button');
+    b.className = 'filter-btn' + (cat===activeCat ? ' active' : '');
+    b.textContent = cat;
+    b.onclick = ()=>{ activeCat = cat; renderFilters(); renderGrid(); };
+    filtersEl.appendChild(b);
+  });
+}
+
+// ---- grid ----
+const gridEl = document.getElementById('grid');
+function renderGrid(){
+  gridEl.innerHTML = '';
+  const list = PROJECTS.filter(p=> activeCat==='All' || p.category===activeCat);
+  list.forEach(p=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    const linkHtml = p.link
+      ? `<a class="card-link" href="${p.link}" target="_blank" rel="noopener">View project →</a>`
+      : `<span class="card-link disabled">Not started yet</span>`;
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="card-id">${p.id}</span>
+        <span class="status-pill ${statusClass(p.status)}">${p.status}</span>
+      </div>
+      <h3 class="card-title">${p.title}</h3>
+      <div class="card-desc">${p.description.length > 118 ? p.description.slice(0,115)+'…' : p.description}</div>
+      <div class="card-meta">
+        <span class="meta-chip ${diffClass(p.difficulty)}">${p.difficulty}</span>
+        <span class="meta-chip">${p.time}</span>
+      </div>
+      <div class="card-more">Details <span class="chev">▾</span></div>
+      <div class="card-expand">
+        <div class="row"><b>Full description:</b> ${p.description}</div>
+        <div class="row"><b>Skills:</b> ${p.skills}</div>
+        <div class="row"><b>Tools:</b> ${p.tools}</div>
+        <div class="row"><b>Deliverable:</b> ${p.deliverable}</div>
+        <div class="row"><b>Resume bullet:</b> ${p.bullet}</div>
+        ${linkHtml}
+      </div>
+    `;
+    const more = card.querySelector('.card-more');
+    const expand = card.querySelector('.card-expand');
+    more.onclick = ()=>{
+      expand.classList.toggle('open');
+      more.querySelector('.chev').textContent = expand.classList.contains('open') ? '▴' : '▾';
+    };
+    gridEl.appendChild(card);
+  });
+}
+
+renderFilters();
+renderGrid();
+</script>
+
+</body>
+</html>
