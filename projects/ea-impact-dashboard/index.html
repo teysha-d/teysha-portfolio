@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EA Impact Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root {
+    --ink: #23413A;
+    --sage: #E8EDE5;
+    --gold: #C9A961;
+    --clay: #B86B5E;
+    --paper: #FAF8F3;
+    --charcoal: #2B2B28;
+    --muted: #6B7A73;
+    --line: #EDE8DA;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--paper);
+    color: var(--charcoal);
+  }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+  .serif { font-family: 'Fraunces', serif; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 24px 64px; }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.1;
+  }
+  .subhead {
+    font-size: 16px;
+    color: var(--muted);
+    margin-top: 10px;
+    max-width: 560px;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 24px 0 28px;
+    align-items: center;
+  }
+  .btn {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--charcoal);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn:hover { border-color: var(--ink); }
+  .btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .btn.ghost { border-style: dashed; color: var(--muted); }
+  .btn.danger:hover { border-color: var(--clay); color: var(--clay); }
+  .spacer { flex: 1 1 auto; }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .kpi-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 18px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(35,65,58,0.10); }
+  .kpi-value { font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 600; color: var(--ink); }
+  .kpi-value .suffix { font-size: 15px; color: var(--gold); margin-left: 4px; }
+  .kpi-label { font-size: 12.5px; color: var(--muted); margin-top: 6px; font-weight: 500; }
+
+  .chart-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; margin-bottom: 40px; }
+  .panel { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px 20px 12px; }
+  .panel-title { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .panel-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 12px; }
+  .legend-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .legend-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .legend-name { font-weight: 500; }
+  .legend-val { color: var(--muted); margin-left: auto; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 10px 14px;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: left;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  tbody td { padding: 6px 14px; border-bottom: 1px solid #F2EEE3; }
+  tbody tr:hover { background: var(--sage); }
+  .cell-input {
+    width: 100%;
+    border: 1px solid transparent;
+    background: transparent;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--charcoal);
+    padding: 6px 6px;
+    border-radius: 6px;
+  }
+  .cell-input.text-input { font-family: 'Inter', sans-serif; }
+  .cell-input:hover, .cell-input:focus {
+    border-color: var(--line);
+    background: var(--paper);
+    outline: none;
+  }
+  .row-del {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .row-del:hover { color: var(--clay); background: #FBEFEC; }
+
+  .table-panel { background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .table-header { padding: 20px 20px 12px; display: flex; align-items: center; gap: 12px; }
+  .table-scroll { overflow-x: auto; }
+  .table-footer { padding: 14px 20px; border-top: 1px solid var(--line); }
+
+  .footnote { margin-top: 28px; font-size: 12px; color: var(--muted); text-align: center; }
+  .save-flash {
+    font-size: 12px;
+    color: var(--gold);
+    font-family: 'IBM Plex Mono', monospace;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .save-flash.show { opacity: 1; }
+
+  input[type="file"] { display: none; }
+
+  @media (max-width: 760px) {
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .chart-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow" id="dateRangeLabel">Impact log</div>
+  <h1 id="heroValue">0 hours saved</h1>
+  <p class="subhead">Every meeting coordinated and task closed out, tracked day by day, so the quiet admin work behind the scenes shows up as a number someone can point to.</p>
+
+  <div class="controls">
+    <button class="btn active" data-range="all" id="rangeAll">All time</button>
+    <button class="btn" data-range="recent" id="rangeRecent">Last 14 days</button>
+    <span class="spacer"></span>
+    <button class="btn" id="exportBtn">Export data (.json)</button>
+    <button class="btn" id="importBtn">Import data (.json)</button>
+    <button class="btn ghost danger" id="resetBtn">Reset to sample data</button>
+    <input type="file" id="importFile" accept="application/json" />
+    <span class="save-flash" id="saveFlash">saved ✓</span>
+  </div>
+
+  <div class="kpi-grid" id="kpiGrid"></div>
+
+  <div class="chart-grid">
+    <div class="panel">
+      <div class="panel-title">Daily trend</div>
+      <div class="panel-sub">Meetings, tasks, and hours saved by day</div>
+      <canvas id="trendChart" height="240"></canvas>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Where the hours came from</div>
+      <div class="panel-sub">Hours saved by automation type</div>
+      <canvas id="pieChart" height="200"></canvas>
+      <div class="legend-list" id="pieLegend"></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:40px;">
+    <div class="panel-title">Tasks resolved by automation type</div>
+    <div class="panel-sub" id="toolsLine">&nbsp;</div>
+    <canvas id="barChart" height="200"></canvas>
+  </div>
+
+  <div class="table-panel">
+    <div class="table-header">
+      <div class="panel-title" style="margin-bottom:0;">Daily log</div>
+      <span class="spacer"></span>
+      <button class="btn" id="addRowBtn">+ Add day</button>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Meetings</th>
+            <th>Tasks</th>
+            <th>Hours saved</th>
+            <th>Automation type</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="logBody"></tbody>
+      </table>
+    </div>
+    <div class="table-footer" style="font-size:12px;color:var(--muted);">
+      Click any cell to edit. Changes save automatically to this browser.
+    </div>
+  </div>
+
+  <div class="footnote">
+    Data is stored in your browser's local storage, edits persist here on this device even after you close the tab.
+    Use Export regularly to keep a backup you can move between devices or restore from.
+  </div>
+
+</div>
+
+<script>
+(function () {
+  const STORAGE_KEY = "ea_impact_dashboard_data_v1";
+
+  const DEFAULT_DATA = [
+    { date: "2026-06-29", meetings: 6, tasks: 14, hours: 2.5, category: "Email templates" },
+    { date: "2026-06-30", meetings: 4, tasks: 11, hours: 1.8, category: "Calendar scheduling" },
+    { date: "2026-07-01", meetings: 7, tasks: 16, hours: 3.2, category: "Vendor follow-up" },
+    { date: "2026-07-02", meetings: 3, tasks: 9,  hours: 1.5, category: "Report generation" },
+    { date: "2026-07-03", meetings: 5, tasks: 12, hours: 2.0, category: "Email templates" },
+    { date: "2026-07-06", meetings: 8, tasks: 18, hours: 3.5, category: "Calendar scheduling" },
+    { date: "2026-07-07", meetings: 5, tasks: 13, hours: 2.2, category: "Vendor follow-up" },
+    { date: "2026-07-08", meetings: 6, tasks: 15, hours: 2.8, category: "Report generation" },
+    { date: "2026-07-09", meetings: 4, tasks: 10, hours: 1.6, category: "Email templates" },
+    { date: "2026-07-10", meetings: 7, tasks: 17, hours: 3.0, category: "Calendar scheduling" },
+  ];
+
+  const PIE_COLORS = ["#23413A", "#C9A961", "#B86B5E", "#6B7A73", "#8FA79C", "#D9B98A"];
+
+  let data = loadData();
+  let range = "all";
+  let trendChart, pieChart, barChart;
+  let saveFlashTimer = null;
+
+  function loadData() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return structuredCloneSafe(DEFAULT_DATA);
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed) || !parsed.length) return structuredCloneSafe(DEFAULT_DATA);
+      return parsed;
+    } catch (e) {
+      return structuredCloneSafe(DEFAULT_DATA);
+    }
+  }
+
+  function structuredCloneSafe(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
+  function saveData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    flashSaved();
+  }
+
+  function flashSaved() {
+    const el = document.getElementById("saveFlash");
+    el.classList.add("show");
+    clearTimeout(saveFlashTimer);
+    saveFlashTimer = setTimeout(() => el.classList.remove("show"), 1200);
+  }
+
+  function round1(n) { return Math.round(n * 10) / 10; }
+
+  function sortedData() {
+    return [...data].sort((a, b) => a.date.localeCompare(b.date));
+  }
+
+  function filteredData() {
+    const sorted = sortedData();
+    if (range === "all" || sorted.length === 0) return sorted;
+    const maxDate = new Date(sorted[sorted.length - 1].date);
+    const cutoff = new Date(maxDate);
+    cutoff.setDate(cutoff.getDate() - 13);
+    return sorted.filter(d => new Date(d.date) >= cutoff);
+  }
+
+  function dayLabel(dateStr) {
+    const d = new Date(dateStr + "T00:00:00");
+    if (isNaN(d)) return dateStr;
+    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  }
+
+  function aggregateByCategory(rows) {
+    const map = {};
+    rows.forEach(d => {
+      const key = (d.category || "Uncategorized").trim() || "Uncategorized";
+      if (!map[key]) map[key] = { category: key, hours: 0, tasks: 0, meetings: 0 };
+      map[key].hours += Number(d.hours) || 0;
+      map[key].tasks += Number(d.tasks) || 0;
+      map[key].meetings += Number(d.meetings) || 0;
+    });
+    return Object.values(map).sort((a, b) => b.hours - a.hours);
+  }
+
+  function computeTotals(rows) {
+    const meetings = rows.reduce((s, d) => s + (Number(d.meetings) || 0), 0);
+    const tasks = rows.reduce((s, d) => s + (Number(d.tasks) || 0), 0);
+    const hours = rows.reduce((s, d) => s + (Number(d.hours) || 0), 0);
+    const days = rows.length || 1;
+    return {
+      meetings, tasks,
+      hours: round1(hours),
+      avgPerDay: round1(hours / days),
+    };
+  }
+
+  function render() {
+    const rows = filteredData();
+    const totals = computeTotals(rows);
+    const catData = aggregateByCategory(rows);
+
+    document.getElementById("dateRangeLabel").textContent = rows.length
+      ? `Impact log · ${dayLabel(rows[0].date)} – ${dayLabel(rows[rows.length - 1].date)}`
+      : "Impact log · no entries yet";
+    document.getElementById("heroValue").textContent = `${totals.hours} hours saved`;
+
+    renderKpis(totals);
+    renderTrendChart(rows);
+    renderPieChart(catData);
+    renderBarChart(catData);
+    renderToolsLine(catData);
+    renderTable();
+  }
+
+  function renderKpis(totals) {
+    const grid = document.getElementById("kpiGrid");
+    const items = [
+      { label: "Meetings coordinated", value: totals.meetings, suffix: "" },
+      { label: "Tasks resolved", value: totals.tasks, suffix: "" },
+      { label: "Hours saved via automation", value: totals.hours, suffix: "hrs" },
+      { label: "Avg. hours saved / day", value: totals.avgPerDay, suffix: "hrs" },
+    ];
+    grid.innerHTML = items.map(k => `
+      <div class="kpi-card">
+        <div class="kpi-value">${k.value}${k.suffix ? `<span class="suffix">${k.suffix}</span>` : ""}</div>
+        <div class="kpi-label">${k.label}</div>
+      </div>
+    `).join("");
+  }
+
+  function renderTrendChart(rows) {
+    const ctx = document.getElementById("trendChart").getContext("2d");
+    const labels = rows.map(d => dayLabel(d.date));
+    const cfg = {
+      type: "line",
+      data: {
+        labels,
+        datasets: [
+          { label: "Meetings", data: rows.map(d => Number(d.meetings) || 0), borderColor: "#23413A", backgroundColor: "#23413A", tension: 0.3, pointRadius: 3 },
+          { label: "Tasks", data: rows.map(d => Number(d.tasks) || 0), borderColor: "#C9A961", backgroundColor: "#C9A961", tension: 0.3, pointRadius: 3 },
+          { label: "Hours saved", data: rows.map(d => Number(d.hours) || 0), borderColor: "#B86B5E", backgroundColor: "#B86B5E", tension: 0.3, pointRadius: 3 },
+        ],
+      },
+      options: baseLineOptions(),
+    };
+    if (trendChart) { trendChart.data = cfg.data; trendChart.update(); }
+    else trendChart = new Chart(ctx, cfg);
+  }
+
+  function baseLineOptions() {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { position: "bottom", labels: { font: { family: "Inter", size: 12 }, color: "#2B2B28", boxWidth: 10 } },
+        tooltip: { titleFont: { family: "Inter" }, bodyFont: { family: "Inter" } },
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { family: "Inter", size: 11 }, color: "#6B7A73" } },
+        y: { grid: { color: "#EDE8DA" }, ticks: { font: { family: "Inter", size: 11 }, color: "#6B7A73" } },
+      },
+    };
+  }
+
+  function renderPieChart(catData) {
+    const ctx = document.getElementById("pieChart").getContext("2d");
+    const cfg = {
+      type: "doughnut",
+      data: {
+        labels: catData.map(c => c.category),
+        datasets: [{ data: catData.map(c => round1(c.hours)), backgroundColor: catData.map((c, i) => PIE_COLORS[i % PIE_COLORS.length]), borderWidth: 0 }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${c.label}: ${c.raw} hrs` } } },
+        cutout: "60%",
+      },
+    };
+    if (pieChart) { pieChart.data = cfg.data; pieChart.update(); }
+    else pieChart = new Chart(ctx, cfg);
+
+    const legend = document.getElementById("pieLegend");
+    legend.innerHTML = catData.map((c, i) => `
+      <div class="legend-row">
+        <span class="dot" style="background:${PIE_COLORS[i % PIE_COLORS.length]}"></span>
+        <span class="legend-name">${escapeHtml(c.category)}</span>
+        <span class="legend-val mono">${round1(c.hours)} hrs</span>
+      </div>
+    `).join("");
+  }
+
+  function renderBarChart(catData) {
+    const ctx = document.getElementById("barChart").getContext("2d");
+    const cfg = {
+      type: "bar",
+      data: {
+        labels: catData.map(c => c.category),
+        datasets: [{ label: "Tasks resolved", data: catData.map(c => c.tasks), backgroundColor: "#23413A", borderRadius: 6, maxBarThickness: 56 }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { family: "Inter", size: 11 }, color: "#6B7A73" } },
+          y: { grid: { color: "#EDE8DA" }, ticks: { font: { family: "Inter", size: 11 }, color: "#6B7A73" } },
+        },
+      },
+    };
+    if (barChart) { barChart.data = cfg.data; barChart.update(); }
+    else barChart = new Chart(ctx, cfg);
+  }
+
+  function renderToolsLine(catData) {
+    document.getElementById("toolsLine").textContent = catData.length
+      ? catData.map(c => c.category).join("  ·  ")
+      : "Add a day below to see your automation types here";
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+  }
+
+  function renderTable() {
+    const body = document.getElementById("logBody");
+    const rows = sortedData();
+    body.innerHTML = rows.map((d, displayIdx) => {
+      const idx = data.indexOf(d);
+      return `
+      <tr>
+        <td><input class="cell-input" type="date" value="${d.date}" data-idx="${idx}" data-field="date"></td>
+        <td><input class="cell-input" type="number" min="0" step="1" value="${d.meetings}" data-idx="${idx}" data-field="meetings"></td>
+        <td><input class="cell-input" type="number" min="0" step="1" value="${d.tasks}" data-idx="${idx}" data-field="tasks"></td>
+        <td><input class="cell-input" type="number" min="0" step="0.1" value="${d.hours}" data-idx="${idx}" data-field="hours"></td>
+        <td><input class="cell-input text-input" type="text" value="${escapeHtml(d.category)}" data-idx="${idx}" data-field="category" placeholder="e.g. Email templates"></td>
+        <td><button class="row-del" data-idx="${idx}" title="Delete row">✕</button></td>
+      </tr>`;
+    }).join("");
+
+    body.querySelectorAll("input").forEach(input => {
+      input.addEventListener("change", onCellChange);
+    });
+    body.querySelectorAll(".row-del").forEach(btn => {
+      btn.addEventListener("click", onDeleteRow);
+    });
+  }
+
+  function onCellChange(e) {
+    const idx = Number(e.target.dataset.idx);
+    const field = e.target.dataset.field;
+    let value = e.target.value;
+    if (field === "meetings" || field === "tasks" || field === "hours") {
+      value = Number(value) || 0;
+    }
+    data[idx][field] = value;
+    saveData();
+    render();
+  }
+
+  function onDeleteRow(e) {
+    const idx = Number(e.currentTarget.dataset.idx);
+    data.splice(idx, 1);
+    saveData();
+    render();
+  }
+
+  document.getElementById("addRowBtn").addEventListener("click", () => {
+    const sorted = sortedData();
+    let nextDate = new Date();
+    if (sorted.length) {
+      nextDate = new Date(sorted[sorted.length - 1].date);
+      nextDate.setDate(nextDate.getDate() + 1);
+    }
+    const iso = nextDate.toISOString().slice(0, 10);
+    data.push({ date: iso, meetings: 0, tasks: 0, hours: 0, category: "" });
+    saveData();
+    render();
+  });
+
+  document.getElementById("rangeAll").addEventListener("click", (e) => setRange("all", e.target));
+  document.getElementById("rangeRecent").addEventListener("click", (e) => setRange("recent", e.target));
+
+  function setRange(r, btn) {
+    range = r;
+    document.querySelectorAll("[data-range]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    render();
+  }
+
+  document.getElementById("exportBtn").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ea-impact-data-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById("importBtn").addEventListener("click", () => {
+    document.getElementById("importFile").click();
+  });
+
+  document.getElementById("importFile").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result);
+        if (!Array.isArray(parsed)) throw new Error("Not an array");
+        data = parsed;
+        saveData();
+        render();
+      } catch (err) {
+        alert("That file couldn't be read as dashboard data. Make sure it's a .json export from this dashboard.");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    if (confirm("This replaces everything currently in the dashboard with the original sample data. Export a backup first if you want to keep your edits. Continue?")) {
+      data = structuredCloneSafe(DEFAULT_DATA);
+      saveData();
+      render();
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
